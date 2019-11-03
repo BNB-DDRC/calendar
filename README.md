@@ -54,11 +54,11 @@ npm run server
 
 #### URL
 
-`/rooms/:id`
+`/room/:id`
 
 #### GET:
 
-`/room/:id/availability` - Retrieves the current available and unavailable dates for this location ID in body of GET request
+`/room/:id/availability` - Retrieves the current unavailable dates for this location ID in body of GET request
 
               ex: {id: number}
 
@@ -66,14 +66,14 @@ npm run server
 
 `room/:id/availability` - Updates this location's available dates based on the dates chosen on the calendar, dates chosen will be sent in PATCH body
 
-              ex: {dateStart: date, dateEnd: date}
+              ex: { id: id, dateStart: date, dateEnd: date }
 
 #### POST:
 
-`/room/` - Adds new location passing information that is needed in POST body, ID given by database
+`/room/:id/availability` - Adds new unavailable dates to location passing information that is needed in POST body, ID determined by location currently browsing
 
-           ex: {sundayMin: number, mondayMin: number, tuesdayMin: number, wednesdayMin: number, thursdayMin: number, fridayMin: number, saturdayMin: number, maxDays: number, unavailableDates: dates}
+           ex: { id: id, unavailableDates: dates}
 
 #### DELETE:
 
-`room/:id` - Removes the location by ID given from the database
+`room/:id/avilability` - Removes the unavailable dates selected
