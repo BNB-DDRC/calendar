@@ -1,9 +1,11 @@
 const moment = require('moment');
 const faker = require('faker');
 const fs = require('fs');
+//const uuidv4 = require('uuid/v4');
+const Uuid = require('cassandra-driver').types.Uuid;
 
-var bookings = [];
 var randomBookedDatesGenerator = function (listing_id) {
+  var bookings = [];
   var currYear = 2019;
   var bookingSet = new Set();
   // for months October through December
@@ -12,11 +14,11 @@ var randomBookedDatesGenerator = function (listing_id) {
   // random number days per booking between 5 and 2, 2 inclusive
   // random start date for reservation random between 28 and 1, 1 inclusive (28 for making a 2 day reso possible without being kicked out)
 
-  for (var m = 10; m < 13; m++) {
-    var bookingsPerMonth = Math.floor(Math.random() * (10 - 2) + 2);
+  for (var m = 9; m < 12; m++) {
+    var bookingsPerMonth = Math.floor(Math.random() * (8 - 4)) + 4;
     for (var a = 0; a < bookingsPerMonth; a++) {
-      var totalDaysPerBooking = Math.floor(Math.random() * (5 - 2) + 2);
-      var startDay = Math.floor(Math.random() * (28 - 1) + 1);
+      var totalDaysPerBooking = Math.floor(Math.random() * (5 - 2)) + 2;
+      var startDay = Math.floor(Math.random() * (28 - 1)) + 1;
       if ((startDay + totalDaysPerBooking) > 30) {
         continue; // don't add reservation (don't want to figure out spanning reservations over multiple months right now)
       } else {
@@ -42,13 +44,15 @@ var randomBookedDatesGenerator = function (listing_id) {
     }
   }
   return bookings;
-}
+};
 
-const writeLocationAvailability = fs.createWriteStream('availability1.csv')
-writeLocationAvailability.write('listing_id, min_stay_su, min_stay_m, min_stay_tu, min_stay_w, min_stay_th, min_stay_f, min_stay_sa, max_stay, starting_date, ending_date\n', 'utf8');
+//console.log(randomBookedDatesGenerator(1));
+
+const writeLocationAvailability = fs.createWriteStream('availabilityCassUUID.csv')
+writeLocationAvailability.write('listing_id|min_stay_su|min_stay_m|min_stay_tu|min_stay_w|min_stay_th|min_stay_f|min_stay_sa|max_stay|starting_date|ending_date|booking_id\n', 'utf8');
 
 function writeData(writer, encoding, callback) {
-  let i = 10; //10000000
+  let i = 10000000;
   let listing_id = 0;
   function write() {
     let ok = true;
@@ -56,7 +60,6 @@ function writeData(writer, encoding, callback) {
       i -= 1;
       listing_id += 1;
       let bookingsDates = randomBookedDatesGenerator(listing_id);
-      const listingID = listing_id;
       const min_stay_su = Math.floor(Math.random() * 5);
       const min_stay_m = Math.floor(Math.random() * 3);
       const min_stay_tu = Math.floor(Math.random() * 3);
@@ -65,15 +68,19 @@ function writeData(writer, encoding, callback) {
       const min_stay_f = Math.floor(Math.random() * 5);
       const min_stay_sa = Math.floor(Math.random() * 5);
       const max_stay = Math.floor(Math.random() * (35 - 7) + 7);
-      const starting_date = bookingsDates;
-      const ending_date = bookingsDates;
-      const data = `${listing_id}, ${min_stay_su}, ${min_stay_m}, ${min_stay_tu}, ${min_stay_w}, ${min_stay_th}, ${min_stay_f}, ${min_stay_sa}, ${max_stay}, ${starting_date}, ${ending_date}\n`;
-      if (i === 0) {
-        writer.write(data, encoding, callback);
-      } else {
-        // see if we should continue, or wait, don't pass the callback because we're not done yet
-        ok = writer.write(data, encoding);
-      }
+      let mapped = bookingsDates.map(function (dates) {
+        const listingID = listing_id;
+        const starting_date = dates.startDate;
+        const ending_date = dates.endDate;
+        const booking_id = Uuid.random();
+        const data = `${listing_id}|${min_stay_su}|${min_stay_m}|${min_stay_tu}|${min_stay_w}|${min_stay_th}|${min_stay_f}|${min_stay_sa}|${max_stay}|${starting_date}|${ending_date}|${booking_id}\n`;
+        if (i === 0) {
+          writer.write(data, encoding, callback);
+        } else {
+          // see if we should continue, or wait, don't pass the callback because we're not done yet
+          ok = writer.write(data, encoding);
+        }
+      });
     } while (i > 0 && ok);
     if (i > 0) {
       // had to stop early, write some more once it drains
