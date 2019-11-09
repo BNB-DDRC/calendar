@@ -4,3 +4,6 @@ coverage/
 .eslintrc.json
 .prettierrrc
 client/src/day_org.jsx
+availabilityCassUUID.csv
+dataListingAvailabilityTable.csv
+dataBookedDates.csv
