@@ -1,3 +1,4 @@
+main.js
 node_modules/
 test/
 coverage/
@@ -5,5 +6,10 @@ coverage/
 .prettierrrc
 client/src/day_org.jsx
 availabilityCassUUID.csv
+newrelic.js
+cassandra.cql
+cassandraDataGenerationScript.js
+dataBookedDates1.csv
 dataListingAvailabilityTable.csv
-dataBookedDates.csv
+docker-compose.yml
+Dockerfile

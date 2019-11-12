@@ -160,6 +160,7 @@ class SleepAndCalendar extends React.Component {
         });
       })
       .catch(err => {
+        console.log('this is res', res);
         console.log('err.. did not set state', err);
       });
   }

@@ -1,6 +1,7 @@
 const moment = require('moment');
 const faker = require('faker');
 const fs = require('fs');
+const uuidv4 = require('uuid/v4');
 
 var randomBookedDatesGenerator = function (listing_id) {
   var bookings = [];
@@ -46,8 +47,8 @@ var randomBookedDatesGenerator = function (listing_id) {
 
 //console.log(randomBookedDatesGenerator(1));
 
-const writeLocationAvailability = fs.createWriteStream('dataBookedDates.csv')
-writeLocationAvailability.write('listing_id, starting_date, ending_date\n', 'utf8');
+const writeLocationAvailability = fs.createWriteStream('dataBookedDates1.csv')
+writeLocationAvailability.write('listing_id,starting_date,ending_date,booking_id\n', 'utf8');
 
 function writeData(writer, encoding, callback) {
   let i = 10000000;
@@ -57,12 +58,16 @@ function writeData(writer, encoding, callback) {
     do {
       i -= 1;
       listing_id += 1;
+      if(listing_id % 100000 === 0) {
+        console.log(listing_id);
+      }
       let bookingsDates = randomBookedDatesGenerator(listing_id);
       let mapped = bookingsDates.map(function (dates) {
         const listingID = listing_id;
         const starting_date = dates.startDate;
         const ending_date = dates.endDate;
-        const data = `${listing_id}, ${starting_date}, ${ending_date}\n`;
+        const booking_id = uuidv4();
+        const data = `${listing_id},${starting_date},${ending_date},${booking_id}\n`;
         if (i === 0) {
           writer.write(data, encoding, callback);
         } else {

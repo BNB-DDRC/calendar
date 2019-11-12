@@ -3,7 +3,7 @@ DROP DATABASE IF EXISTS availability;
 CREATE DATABASE availability;
 
 CREATE TABLE listingAvailability(
-  listing_id SERIAL NOT NULL PRIMARY KEY,
+  listing_id int NOT NULL PRIMARY KEY,
   min_stay_su int NOT NULL,
   min_stay_m int NOT NULL,
   min_stay_tu int NOT NULL,
@@ -14,11 +14,11 @@ CREATE TABLE listingAvailability(
   max_stay int NOT NULL
 );
 
-CREATE TABLE unavailableDates(
-  id int NOT NULL PRIMARY KEY,
+CREATE TABLE bookedDates(
+  booking_id uuid NOT NULL,
   starting_date date NOT NULL,
   ending_date date NOT NULL,
   listing_id int NOT NULL
 );
 
-ALTER TABLE unavailableDates ADD FOREIGN KEY (listing_id) REFERENCES listingAvailability;
+-- ALTER TABLE unavailableDates ADD FOREIGN KEY (listing_id) REFERENCES listingAvailability;
