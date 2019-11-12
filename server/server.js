@@ -1,7 +1,10 @@
+require('newrelic');
 const express = require('express');
 const path = require('path');
 const compression = require('compression');
 const router = require('./router.js');
+const bodyParser = require('body-parser');
+
 
 const app = express();
 const port = 3004;
@@ -24,11 +27,18 @@ function shouldCompress(req, res) {
   return compression.filter(req, res);
 }
 
-app.use('/', express.static(path.join(__dirname, '..', 'public')));
+app.use(bodyParser.json());
+app.use(
+  bodyParser.urlencoded({
+    extended: true
+  })
+);
+
+//app.use('/', express.static(path.join(__dirname, '..', 'public')));
 
 app.use('/rooms/:id', express.static(path.join(__dirname, '..', 'public')));
 
 app.get('/api/:id', router.router);
-app.post('/api/:id', router.router);
+app.post('/api/:id', router.router.post);
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));

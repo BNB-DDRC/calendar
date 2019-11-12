@@ -8,6 +8,7 @@ const Sequelize = require('sequelize');
 // });
 
 // database, username, pass for localhost deployment
+
 const sequelize = new Sequelize('siestaNbrekkie', 'root', '', {
   host: 'localhost',
   dialect: 'mysql'
