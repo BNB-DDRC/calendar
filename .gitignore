@@ -6,7 +6,6 @@ coverage/
 .prettierrrc
 client/src/day_org.jsx
 availabilityCassUUID.csv
-newrelic.js
 cassandra.cql
 cassandraDataGenerationScript.js
 dataBookedDates1.csv
