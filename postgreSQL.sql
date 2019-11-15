@@ -15,10 +15,10 @@ CREATE TABLE listingAvailability(
 );
 
 CREATE TABLE bookedDates(
-  booking_id uuid NOT NULL,
+  listing_id int NOT NULL
   starting_date date NOT NULL,
   ending_date date NOT NULL,
-  listing_id int NOT NULL
+  booking_id uuid NOT NULL,
 );
 
 -- ALTER TABLE unavailableDates ADD FOREIGN KEY (listing_id) REFERENCES listingAvailability;

@@ -1,12 +1,40 @@
 config:
   target: 'http://localhost:3004'
   phases:
-    - duration: 60
+    - duration: 30
+      arrivalRate: 10
+      rampTo: 100
+    - duration: 30
+      arrivalRate: 100
+      rampTo: 200
+    - duration: 30
+      arrivalRate: 200
+      rampTo: 300
+    - duration: 30
+      arrivalRate: 300
+      rampTo: 400
+    - duration: 30
       arrivalRate: 400
+      rampTo: 500
+    - duration: 30
+      arrivalRate: 500
+      rampTo: 600
+    - duration: 30
+      arrivalRate: 600
+      rampTo: 700
+    - duration: 30
+      arrivalRate: 700
+      rampTo: 800
+    - duration: 30
+      arrivalRate: 800
+      rampTo: 900
+    - duration: 30
+      arrivalRate: 900
+      rampTo: 1000
   defaults:
     headers:
       x-my-service-auth: '987401838271002188298567'
 scenarios:
   - flow:
     - get:
-        url: "/rooms/15/"
+        url: "/rooms/150000/availability"

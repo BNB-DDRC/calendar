@@ -7,20 +7,23 @@ const pool = new Pool({
   port: 5432,
 })
 
-const getAvailability = (request, response) => {
-  const id = parseInt(request.params.id);
+const getAvailability = (req, res) => {
+  //console.log(req.params.id)
+  const id = parseInt(req.params.id);
 
-  pool.query('SELECT listavailability.listing_id, min_stay_su, min_stay_m, min_stay_tu, min_stay_w, min_stay_th, min_stay_f, min_stay_sa, max_stay, bookeddates.starting_date, ending_date, booking_id FROM listavailability INNER JOIN bookeddates ON bookeddates.listing_id = listavailability.listing_id WHERE listavailability.listing_id = $1', [id], (error, results) => {
-    if (error) {
-      console.error(error)
+
+  pool.query('SELECT listavailability.listing_id, min_stay_su, min_stay_m, min_stay_tu, min_stay_w, min_stay_th, min_stay_f, min_stay_sa, max_stay, bookeddates.starting_date, ending_date, booking_id FROM listavailability INNER JOIN bookeddates ON bookeddates.listing_id = listavailability.listing_id WHERE listavailability.listing_id = $1', [id], (err, result) => {
+    if (err) {
+      res.send(err)
     }
-    //console.log(results.rows);
-    response.status(200).json(results.rows);
+    //console.log(result.rows)
+    res.send(result.rows)
   })
+
 };
 
 const createBooking = (request, response) => {
-  //console.log('this is the request body in the post request', request.body)
+  console.log('this is the request body in the post request', request.body)
   const listing_id = request.body['listing_id'];
   const starting_date = request.body['starting_date']
   const ending_date = request.body['ending_date']
@@ -61,3 +64,11 @@ module.exports = {
 //                     ( column_name [, ...] ) = ( sub-SELECT )
 //                   } [, ...]
 //               [ WHERE condition ]
+
+
+// , (error, results) => {
+//   if (error) {
+//     console.error(error)
+//   }
+//   //console.log(results.rows);
+//   response.status(200).json(results.rows);

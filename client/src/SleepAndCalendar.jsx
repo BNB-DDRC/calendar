@@ -61,7 +61,7 @@ class SleepAndCalendar extends React.Component {
 
       // post request
       axios
-        .post(`http://localhost:3004/api/${lastSegment}`, data)
+        .post(`http://localhost:3004/api/${lastSegment}/availability`, data)
         .then(res => {
           console.log('done posting....');
         })
@@ -143,12 +143,15 @@ class SleepAndCalendar extends React.Component {
   }
 
   componentDidMount() {
-    const parts = document.URL.split('/');
-    const lastSegment = parts.pop() || parts.pop(); // handle potential trailing slash
+    // console.log(document.URL)
+    const parts = document.URL.match(/rooms\/(\d+)\//)[1];
+    // console.log(parts)
+    // const lastSegment = parts.pop() || parts.pop(); // handle potential trailing slash
 
     axios
-      .get(`http://localhost:3004/api/${lastSegment}`)
+      .get(`http://localhost:3004/rooms/${parts}/availability`)
       .then(res => {
+        //console.log('this should be from database', res.data)
         this.setState({
           bookedDates: new Set(res.data.bookedDates),
           dateRestrictions: res.data.dateRestrictions,
@@ -178,12 +181,12 @@ class SleepAndCalendar extends React.Component {
         </div>
         <div className={styles.sleepContainer}>
           <h2 className={styles.h2}>Sleeping arrangements</h2>
-          <SleepList
+          {/* <SleepList
             key="sleeplist1"
             rooms={this.state.rooms}
             sleepView={this.state.sleepView}
             handleSleepClick={this.handleSleepClick}
-          />
+          /> */}
         </div>
 
         <div className={styles.calendarContainer}>

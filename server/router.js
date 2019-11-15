@@ -4,7 +4,7 @@ const db = require('./postgresql.js');
 
 const router = express.Router();
 
-router.get('/api/:id?', (req, res) => {
+router.get('/api/:id/availability', (req, res) => {
   db.getAvailability(req, res)
 })
 
@@ -13,7 +13,7 @@ router.post('/api/:id?', (req, res) => {
   db.createBooking(req, res)
 })
 
-module.exports.router = router;
+//module.exports = router;
 
 // router.get('/api/:id?', (req, res) => {
 //   const { id } = req.params;
