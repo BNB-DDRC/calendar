@@ -27,7 +27,7 @@ app.use(function(req, res, next) {
 //   // fallback to standard filter function
 //   return compression.filter(req, res);
 // }
-app.use('http://ec2-54-67-123-136.us-west-1.compute.amazonaws.com:3004/loaderio-ec25d5c71ad9a14aefc4b096c68bd4c4.txt', express.static('loaderio-ec25d5c71ad9a14aefc4b096c68bd4c4 (1).txt'))
+app.use('http://ec2-54-67-123-136.us-west-1.compute.amazonaws.com:3004/loaderio-ec25d5c71ad9a14aefc4b096c68bd4c4.txt', express.static('../loaderio-ec25d5c71ad9a14aefc4b096c68bd4c4 (1).txt'))
 
 app.use(bodyParser.json());
 app.use(
