@@ -8,13 +8,14 @@ const pool = new Pool({
 })
 
 const getAvailability = (req, res) => {
-  //console.log(req.params.id)
-  const id = parseInt(req.params.id);
+  console.log(req.params.id)
+  //const id = parseInt(req.params.id);
+  const id = Math.floor(Math.random() * (10000000 - 1 + 1)) + 1;
+  console.log(id);
 
-
-  pool.query('SELECT listavailability.listing_id, min_stay_su, min_stay_m, min_stay_tu, min_stay_w, min_stay_th, min_stay_f, min_stay_sa, max_stay, bookeddates.starting_date, ending_date, booking_id FROM listavailability INNER JOIN bookeddates ON bookeddates.listing_id = listavailability.listing_id WHERE listavailability.listing_id = $1', [id], (err, result) => {
+  pool.query(`SELECT listavailability.listing_id, min_stay_su, min_stay_m, min_stay_tu, min_stay_w, min_stay_th, min_stay_f, min_stay_sa, max_stay, bookeddates.starting_date, ending_date, booking_id FROM listavailability INNER JOIN bookeddates ON bookeddates.listing_id = listavailability.listing_id WHERE listavailability.listing_id = ${id}`, (err, result) => {
     if (err) {
-      res.send(err)
+      return res.send(err)
     }
     //console.log(result.rows)
     res.send(result.rows)
@@ -72,3 +73,11 @@ module.exports = {
 //   }
 //   //console.log(results.rows);
 //   response.status(200).json(results.rows);
+
+// , (err, result) => {
+//   if (err) {
+//     res.send(err)
+//   }
+//   //console.log(result.rows)
+//   res.send(result.rows)
+// }

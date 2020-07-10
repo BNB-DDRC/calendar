@@ -147,6 +147,7 @@ class SleepAndCalendar extends React.Component {
     const parts = document.URL.match(/rooms\/(\d+)\//)[1];
     // console.log(parts)
     // const lastSegment = parts.pop() || parts.pop(); // handle potential trailing slash
+    //const parts = Math.floor(Math.random() * (10000000 - 1 + 1)) + 1;
 
     axios
       .get(`http://localhost:3004/rooms/${parts}/availability`)
