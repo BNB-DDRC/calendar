@@ -1,6 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
-import SleepInfo from './SleepInfo.jsx';
+// import SleepInfo from './SleepInfo.jsx';
 import styles from '../styles/title.css';
 
 function Title(props) {
